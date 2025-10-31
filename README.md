@@ -1,70 +1,152 @@
-# Getting Started with Create React App
+# Frontend README – RAG-Powered News Chatbot
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+**Tech Stack:** `React`, `Create React App`, `SCSS`, `Socket.IO`, `REST API`
 
-## Available Scripts
+---
 
-In the project directory, you can run:
+## Overview
 
-### `npm start`
+This frontend implements a **responsive news chatbot** that:
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+- **Connects to a RAG backend** (Redis, Qdrant, Gemini)
+- **Supports both REST API (typed-out)** and **WebSocket (streaming)**
+- **Persists chat history per session** (`?s=abc123`)
+- **Toggles between API and Socket** with a **beautiful switch**
+- **Shows headlines → asks for details** UX flow
+- **100% compliant** with Voosh assignment (UX 5%, Hosting 10%)
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+---
 
-### `npm test`
+## Tech Stack (Justified)
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+| Component     | Choice                   | Justification                         |
+| ------------- | ------------------------ | ------------------------------------- |
+| **Framework** | React + Create React App | Industry standard, easy setup, stable |
+| **Styling**   | SCSS Modules             | Scoped styles, nesting, variables     |
+| **Realtime**  | Socket.IO Client         | Full-duplex, fallback to polling      |
+| **State**     | React Hooks              | Simple, functional components         |
+| **Icons**     | SVG Inline               | No external deps, full control        |
 
-### `npm run build`
+---
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+## Project Structure
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+```
+frontend/
+├── src/
+│   ├── components/
+│   │   ├── ChatBox.jsx             # REST API version
+│   │   ├── ChatBoxWithSocket.jsx   # WebSocket version
+│   │   ├── MessageBubble.jsx
+│   │   └── SessionHeader.jsx
+│   ├── services/
+│   │   ├── apiService.js           # REST calls
+│   │   └── socketService.js        # Socket.IO connection
+│   ├── styles/
+│   │   └── ChatBox.module.scss
+│   ├── App.jsx
+│   └── index.js
+├── public/
+├── .env
+└── package.json
+```
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+---
 
-### `npm run eject`
+## Features
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
+| Feature            | Implementation                    |
+| ------------------ | --------------------------------- |
+| **REST API Mode**  | Typed-out response (char-by-char) |
+| **WebSocket Mode** | Real-time token streaming         |
+| **Toggle Switch**  | Animated switch in input bar      |
+| **Session ID**     | `?s=abc123` in URL                |
+| **New Session**    | Open in new tab → new `?s=`       |
+| **Clear Session**  | Button in header                  |
+| **Auto-scroll**    | Smooth scroll to bottom           |
+| **Loading State**  | Typing dots                       |
+| **Responsive**     | Mobile + desktop                  |
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+---
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
+## Setup & Installation
 
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
+```bash
+# Clone repo
+git clone https://github.com/s-gowtham-d/news-chatbot-ui.git
+cd news-chatbot-ui
 
-## Learn More
+# Install
+npm install
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+# Create .env
+cp .env.example .env
+```
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+### `.env` (Frontend)
 
-### Code Splitting
+```env
+REACT_APP_API_URL=http://localhost:8080
+```
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
+## Run Locally
 
-### Analyzing the Bundle Size
+```bash
+npm start
+```
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
+Open: [http://localhost:3000](http://localhost:3000)
 
-### Making a Progressive Web App
+---
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
+## Switch Between API and WebSocket
 
-### Advanced Configuration
+### Default: **REST API (Typed-out)**
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
+- Starts in **API mode**
+- Response is typed out character-by-character
 
-### Deployment
+### Toggle to **WebSocket (Streaming)**
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
+1. Look at the **input bar**
+2. See the **toggle switch**:
+   ```
+   [ Send ]                Typed  ○─Streaming
+   ```
+3. **Click the switch** → instantly switches to **real-time streaming**
+4. **Click again** → back to typed-out
 
-### `npm run build` fails to minify
+> **Session persists** across modes  
+> **History loads** on refresh  
+> **No page reload**
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+---
+
+## Session Management
+
+| Action        | Result                  |
+| ------------- | ----------------------- |
+| Open app      | `?s=abc123` added       |
+| New tab       | New `?s=xyz789`         |
+| Refresh       | History loads           |
+| Click "Clear" | History gone, new `?s=` |
+
+---
+
+## Build & Deploy
+
+```bash
+# Build
+npm run build
+
+# Serve (optional)
+npx serve -s build
+```
+
+---
+
+## Resources
+
+- **Backend Repo**: `https://github.com/s-gowtham-d/news-chatbot-using-rag-pipeline`
+- **Live Demo**: `https://news-chatbot-ui.vercel.app/`
+- **BBC RSS**: `http://feeds.bbci.co.uk/news/rss.xml`
