@@ -304,7 +304,7 @@
 }
 
 .welcomeTitle {
-  font-size: 2rem;
+  font-size: 1.5rem;
   font-weight: 700;
   margin-bottom: 0.5rem;
   background: linear-gradient(to right, #fff, #f0f0f0);
@@ -314,7 +314,7 @@
 }
 
 .welcomeText {
-  font-size: 1rem;
+  font-size: 0.9em;
   line-height: 1.6;
   margin-bottom: 2rem;
   opacity: 0.95;
@@ -353,14 +353,14 @@
 }
 
 .suggestions {
-  margin-top: 1rem;
-  padding-top: 1rem;
+  margin-top: 0.5rem;
+  padding-top: 0.5rem;
   padding-bottom: 0.5rem;
   border-top: 2px solid rgba(255, 255, 255, 0.2);
 }
 
 .suggestionsTitle {
-  font-size: 1rem;
+  font-size: 0.9rem;
   font-weight: 600;
   margin-bottom: 1rem;
   opacity: 0.9;
@@ -374,7 +374,7 @@
 }
 
 .chip {
-  padding: 0.75rem 1.5rem;
+  padding: 0.5rem 1.5rem;
   background: rgba(255, 255, 255, 0.2);
   border: 2px solid rgba(255, 255, 255, 0.3);
   border-radius: 25px;
